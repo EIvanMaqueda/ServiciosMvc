@@ -1,0 +1,64 @@
+﻿@model ML.AlumnoMateria
+@{
+    ViewBag.Title = "GetAllMateriasAlumnos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <h2>Alumno: @Model.Alumno.Nombre @Model.Alumno.ApellidoPaterno @Model.Alumno.ApellidoMaterno</h2>
+    </div>
+    <br />
+    <div class="row">
+        <div style="float:right">
+            @Html.ActionLink("Agregar", "GetAllMateriasNot", "AlumnoMaterias", htmlAttributes: new { @class = "btn btn-success", IdAlumno = Model.Alumno.IdAlumno })
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        @if (Model.AlumnosMaterias.Count != 0)
+        {
+            //tabla
+            <table class="table table-bordered table-responsive">
+                <thead style="background-color: chartreuse">
+                    <tr>
+                        <td class="hidden">IdAlumno</td>
+                        <td class="text-center" style=" font-weight:bold;">Nombre Materia</td>
+                        <td class="text-center" style=" font-weight:bold;">Costo</td>
+                        <td class="text-center" style=" font-weight:bold;">seleccionar</td>
+
+
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (ML.AlumnoMateria alumnomateria in Model.AlumnosMaterias)
+                    {
+                        <tr>
+
+                            <td class="hidden">@alumnomateria.Alumno.IdAlumno</td>
+                            <td>@alumnomateria.Materia.Nombre</td>
+                            <td>@alumnomateria.Materia.Costo</td>
+                            <td class="text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "AlumnoMateria", new { IdAlumnoMateria = alumnomateria.IdAlumnoMateria  })" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a></td>
+                           
+                        </tr>
+                    }
+                    @*<tr>
+                        <td class="success"></td>
+                        <td class="success">Total: </td>
+                        <td class="success">@total</td>
+                    </tr>*@
+                </tbody>
+            </table>
+
+
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">El Alumno no tiene materias inscritas </div>
+        }
+    </div>
+</div>
+
+
+

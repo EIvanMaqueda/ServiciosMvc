@@ -1,0 +1,68 @@
+﻿@model ML.Materia
+@{
+    ViewBag.Title = "GetAllMateriasNot";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <h2>Alumno</h2>
+    </div>
+    <br />
+    <br />
+    <div class="row">
+        @using (Html.BeginForm("AddMaterias", "AlumnoMateria", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            if (Model.Materias.Count != 0)
+            {
+                //tabla
+                <table class="table table-bordered table-responsive">
+                    <thead style="background-color: chartreuse">
+                        <tr>
+                            <td class="hidden">IdAlumno</td>
+                            <td class="text-center" style=" font-weight:bold;">Nombre Materia</td>
+                            <td class="text-center" style=" font-weight:bold;">Costo</td>
+                            <td class="text-center" style=" font-weight:bold;">seleccionar</td>
+
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @{decimal total = 0; }
+                        @foreach (ML.Materia materia in Model.Materias)
+                        {
+                            <tr>
+
+                                <td class="hidden">@materia.IdMateria</td>
+                                <td>@materia.Nombre</td>
+                                <td>@materia.Costo</td>
+                                <td> <input class="form-check-input" type="checkbox" value="@materia.IdMateria" name="Materias"></td>
+
+
+
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+
+            }
+            else
+            {
+                <div class="alert alert-danger" role="alert">El Alumno no puede insribir mas materias</div>
+            }
+
+    <div class="input-group">
+        <button type="submit" value="Guardar" class="btn btn-success"> <i class="fa-solid fa-floppy-disk fa-beat"></i>  Guardar </button>
+        @*<input type="submit" value="Guardar" class="btn btn-success" />*@
+        @*@Html.ActionLink("Regresar", "GetAllMaterias", "AlumnoMateria", htmlAttributes: new { @class = "btn btn-danger" })*@
+        <a class="btn btn-warning" href="@Url.Action("GetAllMateriasAlumnos", "AlumnoMateria", new { IdAlumno =0 })">Regresar</a>
+    </div>
+        }
+
+
+    </div>
+</div>
+

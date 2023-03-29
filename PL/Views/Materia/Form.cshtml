@@ -1,0 +1,71 @@
+﻿@model ML.Materia
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-11 col-md-12">
+            <h2>Usuario</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("Form", "Materia", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+
+                <div class="form-group-lg">
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.IdMateria, new { @class = "hidden" })
+                            @Html.TextBoxFor(model => model.IdMateria, new { @class = "hidden form-control" })
+                            @Html.ValidationMessageFor(model => model.IdMateria)
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.Nombre)
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa-solid fa-user"></i></span>
+                                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre" })
+                                @Html.ValidationMessageFor(model => model.Nombre)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.Costo)
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa-solid fa-user-tie"></i></span>
+                                @Html.TextBoxFor(model => model.Costo, new { @class = "form-control", @id = "txtApellidoPaterno" })
+                                @Html.ValidationMessageFor(model => model.Costo)
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <br />
+                            <div class="input-group">
+                                <button type="submit" value="Guardar" class="btn btn-success"> <i class="fa-solid fa-floppy-disk fa-beat"></i>  Guardar </button>
+                                @*<input type="submit" value="Guardar" class="btn btn-success" />*@
+                                @Html.ActionLink("Regresar", "GetAll", "Materia", htmlAttributes: new { @class = "btn btn-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            }
+        </div>
+    </div>
+
+</div>
+
+

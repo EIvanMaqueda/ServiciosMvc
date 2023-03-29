@@ -1,0 +1,195 @@
+﻿@model ML.Alumno
+
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-11 col-md-12">
+            <h2>Usuario</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("Form", "Alumno", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+
+                <div class="form-group-lg">
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.IdAlumno, new { @class = "hidden" })
+                            @Html.TextBoxFor(model => model.IdAlumno, new { @class = "hidden form-control" })
+                            @Html.ValidationMessageFor(model => model.IdAlumno)
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.Nombre)
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa-solid fa-user"></i></span>
+                                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre" })
+                                @Html.ValidationMessageFor(model => model.Nombre)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.ApellidoPaterno)
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa-solid fa-user-tie"></i></span>
+                                @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", @id = "txtApellidoPaterno" })
+                                @Html.ValidationMessageFor(model => model.ApellidoPaterno)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.ApellidoMaterno)
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa-regular fa-user"></i>  </span>
+                                @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control", @id = "txtApellidoMaterno" })
+                                @Html.ValidationMessageFor(model => model.ApellidoMaterno)
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+
+
+                    <br />
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <br />
+                            <div class="input-group">
+                                <button type="submit" value="Guardar" class="btn btn-success"> <i class="fa-solid fa-floppy-disk fa-beat"></i>  Guardar </button>
+                                @*<input type="submit" value="Guardar" class="btn btn-success" />*@
+                                @Html.ActionLink("Regresar", "GetAll", "Alumno", htmlAttributes: new { @class = "btn btn-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            }
+        </div>
+    </div>
+
+</div>
+
+@*@Scripts.Render("~/bundles/jquery")
+<script type="text/javascript">
+     $(document).ready(function () {//instruccion par indicar que cuando se inicie la pagina cargue los scripts
+
+         /*estado*/
+
+         $("#ddlPais").change(function () {//indicacion de cuandp ddlPais cambie ejecute una funcion
+             $("#ddlEstado").empty();//vacia el ddl de Estado
+             $("#ddlMunicipio").empty();//vacia el ddl de municipio
+             $("#ddlColonia").empty();//vacia el ddl de colonia
+            $.ajax({//inicia ajax
+                type: 'Post',//metodo por el que se va a ejecutar ajax
+                url: '@Url.Action("EstadoGetByIdPais")',//direccion a la que se ve a ejecutar la funcion
+                dataType: 'json',//tipo de dato recibido desde controlador usuario
+                data: { idPais: $("#ddlPais").val() },//variable que se va a enviar al controlador usuario
+                success: function (estados) {//funcion simialr a for each
+                    $("#ddlEstado").append('<option value="0">' + 'Seleccione una opción' + '</option>');
+                    $.each(estados, function (i, estados) {
+                        $("#ddlEstado").append('<option value="'
+                                                   + estados.IdEstado + '">'
+                                                   + estados.Nombre + '</option>');
+                    });
+                },
+                error: function (ex) {//funcion similar a catch
+                    alert('Failed.' + ex);
+                }
+
+            });
+         });
+
+         /*municipio*/
+
+          $("#ddlEstado").change(function () {
+              $("#ddlMunicipio").empty();
+              $("#ddlColonia").empty();
+            $.ajax({
+                type: 'Post',
+                url: '@Url.Action("MunicipioGetByIdEstado")',
+                dataType: 'json',
+                data: { idEstado: $("#ddlEstado").val() },
+                success: function (municipios) {
+                    $("#ddlMunicipio").append('<option value="0">' + 'Seleccione una opción' + '</option>');
+                    $.each(municipios, function (i, municipios) {
+                        $("#ddlMunicipio").append('<option value="'
+                            + municipios.IdMunicipio + '">'
+                            + municipios.Nombre + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
+
+            });
+          });
+
+                  /*colonia*/
+
+         $("#ddlMunicipio").change(function () {
+              $("#ddlColonia").empty();
+            $.ajax({
+                type: 'Post',
+                url: '@Url.Action("ColoniaGetByIdMunicipio")',
+                dataType: 'json',
+                data: { idMunicipio: $("#ddlMunicipio").val() },
+                success: function (colonias) {
+                    $("#ddlColonia").append('<option value="0">' + 'Seleccione una opción' + '</option>');
+                    $.each(colonias, function (i, colonias) {
+                        $("#ddlColonia").append('<option value="'
+                            + colonias.IdColonia + '">'
+                            + colonias.Nombre +' '+ colonias.CodigoPostal+'</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
+
+            });
+        });
+
+     });//fin ajax
+
+    function validateFile() {//funcion para validar el formato de la imagen
+        var allowedExtension = ['jpeg', 'jpg', 'png'];//formatos validos admitidos
+        var fileExtension = document.getElementById('fuImage').value.split('.').pop().toLowerCase();//obtiene la extencion y la convierte en minusculas
+        var isValidFile = false;//crecaion de la varable que nos indica si el formato es o no valido
+        for (var index in allowedExtension) {
+            if (fileExtension === allowedExtension[index]) {//copara el valor obtenido de la imgen con los formatos permitidos
+                isValidFile = true;//cambia valor de la variable
+                break;
+            }
+        }
+        if (!isValidFile) {//si el formato introducido es incorrecto entra aqui
+            alert('Las extensiones permitidas son : *.' + allowedExtension.join(', *.'));//alerta indicando los formatos permitidos
+            document.getElementById('fuImage').value = ""//vacia el valor del imput para que subo un archivo valido
+        }
+        return isValidFile;//regresa si el archivo es o no permitido
+    }
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#Img').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>*@
+
+
